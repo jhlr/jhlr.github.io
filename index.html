@@ -1,68 +1,278 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="main.css"/>
-	<title>TCC</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>João Rietra — Médico e AI Engineer</title>
+<meta name="description" content="Médico e AI Engineer. Construo aplicações de IA generativa e avalio modelos com rigor: calibração, generalização fora-de-distribuição e fidelidade de explicação.">
+<meta property="og:title" content="João Rietra — Médico e AI Engineer">
+<meta property="og:description" content="IA generativa, avaliação de modelos e o cruzamento entre medicina e engenharia.">
+<meta property="og:type" content="profile">
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #16181d;
+  --muted: #5c6270;
+  --line: #e2e5ea;
+  --accent: #1a4fd6;
+  --card: #f7f8fa;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1014;
+    --fg: #e8eaee;
+    --muted: #9aa2b1;
+    --line: #232833;
+    --accent: #7aa2ff;
+    --card: #161a21;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #ffffff; --fg: #16181d; --muted: #5c6270;
+  --line: #e2e5ea; --accent: #1a4fd6; --card: #f7f8fa;
+}
+:root[data-theme="dark"] {
+  --bg: #0e1014; --fg: #e8eaee; --muted: #9aa2b1;
+  --line: #232833; --accent: #7aa2ff; --card: #161a21;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  font-feature-settings: "kern", "liga";
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header { padding: 72px 0 8px; }
+h1 { font-size: clamp(30px, 6vw, 42px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.02em; }
+.tagline { font-size: clamp(17px, 3vw, 19px); color: var(--muted); margin: 0 0 22px; line-height: 1.5; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 15px; padding-bottom: 34px; border-bottom: 1px solid var(--line); }
+
+section { padding: 38px 0; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: 0; }
+h2 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--muted); font-weight: 600; margin: 0 0 18px;
+}
+h3 { font-size: 17px; margin: 0 0 4px; letter-spacing: -0.01em; }
+p { margin: 0 0 14px; }
+p:last-child { margin-bottom: 0; }
+.lead { font-size: 17px; }
+
+.item { margin-bottom: 26px; }
+.item:last-child { margin-bottom: 0; }
+.meta { font-size: 13.5px; color: var(--muted); margin: 0 0 8px; }
+.meta .sep { opacity: 0.45; padding: 0 6px; }
+.item p { font-size: 15.5px; }
+
+.stack {
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  margin-top: 8px; line-height: 1.6;
+}
+
+.note {
+  background: var(--card); border-left: 2px solid var(--accent);
+  padding: 16px 18px; margin: 0 0 26px; font-size: 15.5px;
+}
+.note strong { font-weight: 600; }
+
+.figures { display: flex; flex-wrap: wrap; gap: 26px; margin: 0 0 20px; }
+.fig { min-width: 108px; }
+.fig .n { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; display: block; line-height: 1.2; }
+.fig .l { font-size: 13px; color: var(--muted); display: block; }
+
+.cvs { display: flex; flex-wrap: wrap; gap: 10px; }
+.cvs a {
+  border: 1px solid var(--line); border-radius: 7px;
+  padding: 9px 15px; font-size: 14.5px; color: var(--fg);
+  transition: border-color .15s ease;
+}
+.cvs a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
+
+#theme {
+  position: fixed; top: 18px; right: 18px;
+  background: var(--card); color: var(--muted);
+  border: 1px solid var(--line); border-radius: 7px;
+  padding: 6px 11px; font-size: 12.5px; cursor: pointer; font-family: inherit;
+}
+#theme:hover { color: var(--fg); }
+
+@media (max-width: 560px) {
+  header { padding-top: 52px; }
+  section { padding: 30px 0; }
+  #theme { top: 12px; right: 12px; }
+}
+</style>
 </head>
 <body>
-	<header>
-		<a href="#" onclick="tab('intro')">Intro</a>
-		<a href="#" onclick="tab('metodo')">Metodo</a>
-		<a href="#" onclick="tab('resultado')">Resultado</a>
-		<a href="#" onclick="tab('discussao')">Discussao</a>
-	</header>
-	<main>
-		<section id="intro">
-			<h3>DIABETES MELLITUS EM PACIENTES SUBMETIDOS À AMPUTAÇÃO</h3>
-			<p>O Diabetes mellitus (DM) é uma doença crônica de alta prevalência e envolvida em uma grande parcela das amputações maiores de membros inferiores (AMMI), representando grave problema de saúde pública.</p>
-			<p>Com base nesse dado fizemos um estudo observacional, transversal e retrospectivo usando prontuários médicos de 104 pacientes submetidos à AMMI no período de novembro de 2011 a dezembro de 2015.</p>
-			<p>Objetivando assim analisar a incidencia dessa abordagem no Serviço de Cirurgia Vascular do Instituto de Medicina Integral Professor Fernando Figueira - IMIP.</p>
-		</section>
-		<section id="metodo" class="hidden">
-			<h2>MATERIAL E MÉTODOS</h2>
-			<p>Trata-se de estudo observacional, transversal e retrospectivo realizado a partir da revisão dos prontuários de pacientes submetidos à amputação maior dos membros inferiores (AMMI) pelo Serviço de Cirurgia Vascular do Instituto de Medicina Integral Professor Fernando Figueira (IMIP) no período entre novembro de 2011 e dezembro de 2015.</p>
+<button id="theme" type="button" aria-label="Alternar tema">tema</button>
 
-			<p>A população de estudo correspondeu a todos os pacientes que realizaram AMMI pelo Serviço de Cirurgia Vascular no período supracitado, totalizando 114 pacientes, dos quais, mediante aplicação dos critérios de exclusão - casos em que no prontuário do paciente haja falta de informações relevantes -, foram considerados válidos para o estudo 104 pacientes, isto é, 91,2% da população submetida à AMMI no período estudado.</p>
+<div class="wrap">
 
-			<p>A coleta das informações foi realizada a partir do resgate dos prontuários dos pacientes arquivados no Serviço de Arquivo Médico e Estatística (SAME) do IMIP. As variáveis observadas incluíram a idade, sexo, procedência, nível de amputação (transfemoral ou transtibial), presença de diabetes mellitus, hipertensão arterial e doença renal crônica, causa da amputação (isquemia, infecção ou outras), existência de cirurgias prévias de amputação menor e de revascularização (bypass ou angioplastia) e a necessidade de nova abordagem cirúrgica para ampliação da amputação. Nos casos de pacientes com mais de uma amputação maior, foram coletados os dados referentes à primeira delas.</p>
-		</section>
-		<section id="resultado" class="hidden">
-			<h2>DADOS PERCEBIDOS</h2>
+<header>
+  <h1>João Rietra</h1>
+  <p class="tagline">Médico e AI Engineer. Construo aplicações de IA generativa e avalio modelos com rigor — calibração, generalização fora da distribuição de treino e fidelidade de explicação.</p>
+  <nav class="links">
+    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
+    <a href="https://github.com/jhlr">GitHub</a>
+    <a href="https://linkedin.com/in/joaorietra">LinkedIn</a>
+    <span style="color:var(--muted)">Recife, Brasil</span>
+  </nav>
+</header>
 
-			<p>Dos 104 pacientes estudados, 55 (53%) eram do sexo feminino, 72 (70%) eram procedentes da Região Metropolitana do Recife, 27 (26%) de outras cidades do estado de Pernambuco e 4 (4%) de outros estados.</p>
-			<p>A média da idade dos pacientes foi de 65,6 anos, enquanto a mediana foi de 68 anos. A idade mínima observada foi de 8 anos e a máxima de 90 anos. A faixa etária mais frequente foi a de 70 a 79 anos, com 31 pacientes (30%), sendo seguida pela faixa de 60 a 69, com 27 indivíduos (26%).</p>
-			<img src="assets/identificacao.png" alt="ERRO">
+<section>
+  <h2>Sobre</h2>
+  <p class="lead">Passei três anos na assistência — urgência pediátrica e atenção primária — e migrei para engenharia de IA sem abrir mão do lado clínico. A pergunta que atravessa tudo que eu faço é a mesma: <strong>quando um modelo é confiável o bastante para sustentar uma decisão?</strong></p>
+  <p>Acurácia não responde isso. Um modelo pode acertar na média e mentir sobre a própria confiança; um mapa de saliência pode ser bonito e não ter relação com a decisão que o modelo tomou. Então eu meço calibração, testo fora da distribuição de treino, verifico se a explicação corresponde ao que o modelo de fato usou — e reporto quando o resultado é negativo, que é a parte que costuma sumir dos relatórios.</p>
+  <p>Hoje trabalho como AI Engineer na LetzGrow e faço mestrado profissional em Engenharia de Software na CESAR School.</p>
+</section>
 
-			<p>Dos pacientes estudados, 83 (80%) eram diabéticos e 93 (89%) tinham HAS. Pacientes com doença renal crônica eram 35 (33%), dos quais 11 (11%) faziam hemodiálise e 8 (8%) receberam transplante renal.</p>
-			<img src="assets/comorbidades.png" alt="ERRO">
+<section>
+  <h2>Agora</h2>
+  <div class="note">
+    <strong>Primeiro aluno classificado com dois projetos simultâneos no School Innovation da CESAR School</strong> (edição 2026.2). É a trilha de pré-incubação da escola: os grupos passam por seleção, deixam a disciplina de Projeto e passam a ser acompanhados por professores orientadores, com artefatos avaliativos ao longo do semestre. Oito grupos foram classificados na edição; dois são meus.
+  </div>
 
-			<p>Quanto à causa da amputação, observou-se que isquemia estava presente em 66 (63%) casos, infecção em 56 (54%) e “outras causas” em 7 casos (7%). Encontrou-se que complicações de infecção e rotura de enxerto decorrentes de revascularizações foram responsáveis pela AMMI de 5 pacientes.</p>
-			<p>Levando-se em consideração a primeira amputação maior nos casos de pacientes com mais de uma AMMI, foi observada a mesma frequência de amputação em nível transtibial e transfemoral, totalizando 52 (50%) casos cada. Foi necessária nova abordagem cirúrgica de ampliação da amputação para 12 (11%) pacientes.</p>
-			<img src="assets/procedimento.png" alt="ERRO">
+  <div class="item">
+    <h3>LetzGrow</h3>
+    <p class="meta">AI Engineer<span class="sep">·</span>Grow Group<span class="sep">·</span>2026 – atual</p>
+    <p>Plataforma de jornada de carreira assistida por IA. Um agente conversacional conduz a trilha, interpreta respostas abertas e gera um plano de desenvolvimento decompondo o objetivo em micro-tarefas adaptativas, com RAG ancorando as recomendações no perfil da pessoa em vez de em texto genérico. Cuido do backend, do pipeline de IA e da camada de dados sensíveis (acesso condicional, auditoria, LGPD).</p>
+    <p class="stack">NestJS · Prisma · PostgreSQL · Groq (Llama 3.3 70B) · Ollama · BullMQ/Redis · React · AWS CDK</p>
+  </div>
 
-			<p>No que se refere à existência de cirurgias prévias – avaliando-se apenas amputações menores, angioplastia ou bypass para salvar o membro doente, observou-se que 26 (25%) pacientes não foram submetidos a qualquer um desses procedimentos antes da AMMI. Havia registro de amputação menor prévia nos prontuários de 58 (56%) pacientes, de angioplastia em 37 (36%) e de bypass em 25 (24%).</p>
-			<img src="assets/passado.png" alt="ERRO">
+  <div class="item">
+    <h3>MAPEN</h3>
+    <p class="meta">Lead técnico: dados e visão computacional<span class="sep">·</span>2026 – atual</p>
+    <p>Detecção de perdas em rede elétrica a partir da divergência entre energia distribuída e energia consumida. Construí a camada de dados — séries horárias de carga do ONS de 2000 a 2026, consumo por unidade federativa e malha geográfica do IBGE — e o subprojeto de leitura automática de medidores, que substitui a leitura manual do display por OCR com TrOCR ajustado sobre o dataset UFPR-AMR.</p>
+    <p class="stack">Python · PyTorch · Transformers · PaddleOCR · DuckDB · MLflow</p>
+  </div>
+</section>
 
-		</section>
-		<section id="discussao" class="hidden">
-			<h2>DISCUSSAO DOS RESULTADOS</h2>
-			<p>A casuística encontrada nesta pesquisa apresenta dados semelhantes a outros estudos nacionais no que se refere à idade média dos doentes amputados. Todavia, apresenta uma diferença significativa em relação a estudos estrangeiros, os quais apresentam uma idade média dos pacientes submetidos à AMMI consideravelmente superior. A diferença em comento pode ser atribuída às diferenças socioeconômicas, notadamente à facilidade de acesso e à qualidade da assistência médica oferecida em países desenvolvidos.</p>
+<section>
+  <h2>Pesquisa</h2>
+  <p>Dissertação de mestrado (CESAR School, 2026): dois artigos conectados sobre confiabilidade de modelos de imagem médica.</p>
 
-			<p>O maior número de pacientes do sexo feminino (53%), ainda que discreto, diverge de outros estudos, os quais revelam um predomínio de pacientes do sexo masculino dentre os amputados9,13. Ademais, não houve diferença significativa na média de idade de cada sexo (65,3 para homens e 65,8 para mulheres), divergindo desses estudos que também encontraram idade média menor para os homens. Todavia, análise estatística pelo método Stepwise demonstrou que os homens possuem duas vezes e meia mais chances de sofrer uma AMMI de nível mais proximal do que as mulheres.</p>
+  <div class="figures">
+    <div class="fig"><span class="n">0,842</span><span class="l">AUC (vs 0,796 ImageNet)</span></div>
+    <div class="fig"><span class="n">0,045</span><span class="l">ECE (vs 0,219 ImageNet)</span></div>
+    <div class="fig"><span class="n">5</span><span class="l">domínios médicos avaliados</span></div>
+  </div>
 
-			<p>Foi encontrada uma razão de AMMI acima do joelho/abaixo do joelho de 1:1, proporção inferior à encontrada por Spichler et al, que observou razão de 2,5:1</p>
+  <div class="item">
+    <h3>Reuso de treino para triagem em imagem médica multidomínio</h3>
+    <p>Comparação controlada de quatro origens de backbone sobre cinco domínios do MedMNIST, avaliando AUC, calibração e fidelidade de explicação por oclusão. O fine-tuning intermediário forense venceu de forma consistente, e a diferença de calibração foi maior que a de poder discriminativo: a escolha de pré-treino afeta mais a confiabilidade da confiança declarada do que o acerto bruto.</p>
+    <p><strong>Resultado negativo reportado:</strong> o Grad-CAM produzia mapas concentrados e convincentes, com fidelidade nula à decisão real do modelo sob teste de oclusão. Explicação plausível não é explicação.</p>
+  </div>
 
-			<p>A frequência extremamente elevada de diabetes mellitus dentre os pacientes amputados (80%) revela-se bem superior ao encontrado em outros estudos, como o de Leite et al, que identificou DM em 42.6% dos pacientes submetidos à AMMI, e o de Vamos et al, com 43,7% de diabéticos. O achado em comento reafirma a relevância da doença nos eventos que levam à AMMI. Em razão das limitações do método de estudo, não foi possível obter dados quanto ao tempo de diagnóstico do DM, tratamento utilizado e controle de índices glicêmicos, fatores que sabidamente repercutem na necessidade de amputação. Alarmante, ainda, a presença de HAS em 89% dos pacientes estudados.</p>
+  <div class="item">
+    <h3>Detecção de imagens manipuladas com redes convolucionais leves</h3>
+    <p>Avaliação empírica e adversarial de detectores próprios contra ViT, Swin e ensembles, em três distribuições. Nenhum detector único generaliza entre tipos de manipulação, e desempenho dentro da distribuição não prediz o de fora. "Leve em parâmetros" também não implica leve na prática — a métrica de custo que importa é latência medida.</p>
+  </div>
 
-			<p>Foi encontrada uma alta frequência de pacientes revascularizados (48%), dado paradoxalmente melhor do que o encontrado em estudo francês feito por Fosse et al, no qual apenas 33% dos doentes foi submetido a revascularização17. Este dado se revela de grande importância, uma vez que está essencialmente relacionado com a facilidade e rapidez do acesso aos serviços especializados.</p>
+  <p style="font-size:15px"><a href="https://github.com/jhlr/pedrita">Código e infraestrutura experimental</a> — MLflow com métricas por época, logging de inferência deduplicado por hash de conteúdo e agregação estatística sobre múltiplas seeds.</p>
+</section>
 
-			<p>Importa observar que a demora em receber atendimento adequado, porém, ainda predomina em nosso meio, de modo que significativa parte dos doentes só são encaminhados para o serviço de cirurgia vascular quando há irreversível deterioração do quadro clínico, e a amputação em níveis mais proximais é a única alternativa disponível. Com efeito, observou-se que em 25% dos casos, a AMMI não foi precedida de qualquer amputação menor ou tentativa de revascularização, o que pode ser devido ao atendimento tardio e o consequente agravamento da saúde do paciente, não sendo mais possível optar por uma abordagem mais conservadora. Importante ainda destacar que há um possível viés, uma vez que nem sempre os procedimentos prévios, principalmente se realizados em outros serviços, eram devidamente registrados nos prontuários. Assim, é possível que haja um superdimensionamento dos pacientes com AMMI primária.</p>
-		</section>
-	</main>
-	<footer>
-	</footer>
-	<script type="text/javascript" src="main.js"></script>
+<section>
+  <h2>Projetos</h2>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/minnow">Minnow</a></h3>
+    <p>Um agente de coding que roda inteiro dentro da aba do navegador do celular. Sem instalar, sem conta, sem backend: o loop do agente, a execução de ferramentas, o sistema de arquivos, o interpretador Python e o git são código do lado do cliente. Todo agente de coding mobile é controle remoto de uma máquina que não é sua — neste, o agente é o cliente, e o único fio que sai do aparelho é a chamada ao modelo.</p>
+    <p>Tem também inferência on-device via WebAssembly, validada ponta a ponta. Medi e documentei o limite: no tamanho que cabe num celular, o modelo relata escritas de arquivo que nunca executou. Então on-device virou conversa e o agente ficou na nuvem — dito no prompt e na interface, não escondido.</p>
+    <p class="stack">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/ragcode">ragcode</a></h3>
+    <p>Servidor Model Context Protocol que expõe um modelo local como ferramentas, com índice semântico de código atualizado a cada commit. Uso todo dia para tirar trabalho volumoso do contexto do agente.</p>
+    <p class="stack">Python · MCP · Ollama · SQLite</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/MiniLM">EfficientNeXt</a></h3>
+    <p>Um LLM autoregressivo escrito do zero: arquitetura <em>hourglass</em> causal que traduz a EfficientNet-B0 para linguagem, com transferência de esqueleto pré-treinado e teste de causalidade como critério de aceite.</p>
+    <p class="stack">Python · PyTorch</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/BTC-Forecast">btc-forecast</a></h3>
+    <p>Avaliação comparativa de foundation models de série temporal — Chronos, TimesFM, Moirai, Lag-Llama, TTM — com fine-tuning, ensemble e backtest. A conclusão honesta é que previsão direcional de curto prazo é indistinguível de passeio aleatório, e está escrita no repositório.</p>
+    <p class="stack">Python · MLflow · Streamlit</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/Blocks-py">Blocks-py</a></h3>
+    <p>Uma DSL embarcada em Python: código Python comum constrói uma árvore sintática tipada em vez de executar, e a mesma árvore pode ser interpretada, compilada em função ou exportada como módulo autônomo. Arquivo único, sem dependências.</p>
+    <p class="stack">Python</p>
+  </div>
+</section>
+
+<section>
+  <h2>Currículo</h2>
+  <p>Três recortes do mesmo material, conforme o interesse.</p>
+  <div class="cvs">
+    <a href="cv/joao-rietra-ai-engineer.pdf">AI Engineer (PDF)</a>
+    <a href="cv/joao-rietra-health-ai.pdf">Saúde e IA (PDF)</a>
+    <a href="cv/joao-rietra-pesquisa.pdf">Pesquisa (PDF)</a>
+  </div>
+</section>
+
+<section>
+  <h2>Formação</h2>
+  <div class="item">
+    <p class="meta">CESAR School, Recife</p>
+    <p>Mestrado Profissional em Engenharia de Software, desde outubro de 2025. Tecnólogo em Ciência de Dados, desde janeiro de 2025.</p>
+  </div>
+  <div class="item">
+    <p class="meta">FPS / IMIP, Recife</p>
+    <p>Medicina, concluído em 2022.</p>
+  </div>
+  <div class="item">
+    <p class="meta">University of Alberta, Canadá</p>
+    <p>Neurociência computacional pelo Ciências sem Fronteiras, 2015–2016: modelagem de fluxos neurais e análise de dados de alta dimensionalidade, no cruzamento entre computação, neurociência e genética.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
+    <span class="sep" style="opacity:.4"> · </span>
+    <a href="https://github.com/jhlr">github.com/jhlr</a>
+    <span class="sep" style="opacity:.4"> · </span>
+    <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme');
+  var saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  if (saved) root.setAttribute('data-theme', saved);
+
+  btn.addEventListener('click', function () {
+    var current = root.getAttribute('data-theme');
+    if (!current) {
+      current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+})();
+</script>
 </body>
 </html>
