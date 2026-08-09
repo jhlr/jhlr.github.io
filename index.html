@@ -8,6 +8,25 @@
 <meta property="og:title" content="João Rietra — Médico e AI Engineer">
 <meta property="og:description" content="IA generativa, avaliação de modelos e o cruzamento entre medicina e engenharia.">
 <meta property="og:type" content="profile">
+<link rel="alternate" hreflang="pt-BR" href="https://jhlr.github.io/?lang=pt">
+<link rel="alternate" hreflang="en" href="https://jhlr.github.io/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://jhlr.github.io/">
+<script>
+/* Idioma resolvido antes da primeira pintura: ?lang= > escolha salva > idioma do navegador. */
+(function () {
+  var lang = null;
+  try {
+    var q = new URLSearchParams(location.search).get('lang');
+    if (q === 'en' || q === 'pt') { lang = q; }
+    if (!lang) { lang = localStorage.getItem('lang'); }
+  } catch (e) {}
+  if (lang !== 'en' && lang !== 'pt') {
+    lang = (navigator.language || 'pt').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
+  }
+  document.documentElement.setAttribute('data-lang', lang);
+  document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'pt-BR');
+})();
+</script>
 <style>
 :root {
   --bg: #ffffff;
@@ -50,6 +69,10 @@ body {
 .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+/* Uma versão por vez. Sem JS o navegador cai no português. */
+:root[data-lang="en"] .lang-pt { display: none; }
+:root:not([data-lang="en"]) .lang-en { display: none; }
 
 header { padding: 72px 0 8px; }
 h1 { font-size: clamp(30px, 6vw, 42px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.02em; }
@@ -99,25 +122,31 @@ p:last-child { margin-bottom: 0; }
 
 footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
 
-#theme {
-  position: fixed; top: 18px; right: 18px;
+.controls { position: fixed; top: 18px; right: 18px; display: flex; gap: 8px; }
+.controls button {
   background: var(--card); color: var(--muted);
   border: 1px solid var(--line); border-radius: 7px;
   padding: 6px 11px; font-size: 12.5px; cursor: pointer; font-family: inherit;
 }
-#theme:hover { color: var(--fg); }
+.controls button:hover { color: var(--fg); }
 
 @media (max-width: 560px) {
-  header { padding-top: 52px; }
+  header { padding-top: 60px; }
   section { padding: 30px 0; }
-  #theme { top: 12px; right: 12px; }
+  .controls { top: 12px; right: 12px; }
 }
 </style>
 </head>
 <body>
-<button id="theme" type="button" aria-label="Alternar tema">tema</button>
+<div class="controls">
+  <button id="lang" type="button" aria-label="Switch language / Trocar idioma">EN</button>
+  <button id="theme" type="button" aria-label="Alternar tema / Toggle theme">tema</button>
+</div>
 
 <div class="wrap">
+
+<!-- ═══════════════════════════ PORTUGUÊS ═══════════════════════════ -->
+<div class="lang-pt">
 
 <header>
   <h1>João Rietra</h1>
@@ -225,6 +254,7 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
     <a href="cv/joao-rietra-health-ai.pdf">Saúde e IA (PDF)</a>
     <a href="cv/joao-rietra-pesquisa.pdf">Pesquisa (PDF)</a>
   </div>
+  <p style="font-size:15px; margin-top:14px">Versões em inglês na <a href="?lang=en">página em inglês</a>.</p>
 </section>
 
 <section>
@@ -244,26 +274,165 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
 </section>
 
 <footer>
-  <div class="wrap" style="padding:0">
-    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
-    <span class="sep" style="opacity:.4"> · </span>
-    <a href="https://github.com/jhlr">github.com/jhlr</a>
-    <span class="sep" style="opacity:.4"> · </span>
-    <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
-  </div>
+  <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
+  <span style="opacity:.4"> · </span>
+  <a href="https://github.com/jhlr">github.com/jhlr</a>
+  <span style="opacity:.4"> · </span>
+  <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
 </footer>
+
+</div><!-- /lang-pt -->
+
+<!-- ═══════════════════════════ ENGLISH ═══════════════════════════ -->
+<div class="lang-en">
+
+<header>
+  <h1>João Rietra</h1>
+  <p class="tagline">Physician and AI engineer. I build generative AI applications and evaluate models with rigour — calibration, generalisation outside the training distribution, and explanation faithfulness.</p>
+  <nav class="links">
+    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
+    <a href="https://github.com/jhlr">GitHub</a>
+    <a href="https://linkedin.com/in/joaorietra">LinkedIn</a>
+    <span style="color:var(--muted)">Recife, Brazil</span>
+  </nav>
+</header>
+
+<section>
+  <h2>About</h2>
+  <p class="lead">I spent three years in clinical practice — paediatric emergency and primary care — and moved into AI engineering without giving up the clinical side. One question runs through everything I do: <strong>when is a model reliable enough to support a decision?</strong></p>
+  <p>Accuracy does not answer that. A model can be right on average and lie about its own confidence; a saliency map can be beautiful and bear no relation to the decision the model actually made. So I measure calibration, test outside the training distribution, check whether the explanation matches what the model really used — and I report the negative results, which is the part that usually disappears from write-ups.</p>
+  <p>I currently work as an AI Engineer at LetzGrow and am taking a Professional Master's in Software Engineering at CESAR School.</p>
+</section>
+
+<section>
+  <h2>Now</h2>
+  <div class="note">
+    <strong>First student ever selected with two simultaneous projects in CESAR School's School Innovation programme</strong> (2026.2 cohort). It is the school's pre-incubation track: teams go through competitive selection, leave the regular Project course behind and are supervised by faculty advisors, assessed on delivered artefacts through the semester. Eight teams were selected in the cohort; two of them are mine.
+  </div>
+
+  <div class="item">
+    <h3>LetzGrow</h3>
+    <p class="meta">AI Engineer<span class="sep">·</span>Grow Group<span class="sep">·</span>2026 – present</p>
+    <p>An AI-assisted career development platform. A conversational agent drives the journey, interprets open-ended answers and generates a development plan by decomposing the goal into adaptive micro-tasks, with RAG grounding the recommendations in the person's own profile rather than in generic text. I own the backend, the AI pipeline and the sensitive-data layer (conditional access, audit trail, Brazil's LGPD — the local equivalent of the GDPR).</p>
+    <p class="stack">NestJS · Prisma · PostgreSQL · Groq (Llama 3.3 70B) · Ollama · BullMQ/Redis · React · AWS CDK</p>
+  </div>
+
+  <div class="item">
+    <h3>MAPEN</h3>
+    <p class="meta">Technical lead: data and computer vision<span class="sep">·</span>2026 – present</p>
+    <p>Detecting electricity-grid losses from the divergence between distributed and consumed energy. I built the data layer — hourly load series from Brazil's national grid operator from 2000 to 2026, consumption per state and IBGE geographic boundaries — and the automatic meter-reading subproject, which replaces manual display reading with OCR using TrOCR fine-tuned on the UFPR-AMR dataset.</p>
+    <p class="stack">Python · PyTorch · Transformers · PaddleOCR · DuckDB · MLflow</p>
+  </div>
+</section>
+
+<section>
+  <h2>Research</h2>
+  <p>Master's dissertation (CESAR School, 2026): two connected papers on the reliability of medical imaging models.</p>
+
+  <div class="figures">
+    <div class="fig"><span class="n">0.842</span><span class="l">AUC (vs 0.796 ImageNet)</span></div>
+    <div class="fig"><span class="n">0.045</span><span class="l">ECE (vs 0.219 ImageNet)</span></div>
+    <div class="fig"><span class="n">5</span><span class="l">medical domains evaluated</span></div>
+  </div>
+
+  <div class="item">
+    <h3>Training reuse for triage in multi-domain medical imaging</h3>
+    <p>Controlled comparison of four backbone origins across five MedMNIST domains, evaluating AUC, calibration and occlusion-based explanation faithfulness. Forensic intermediate fine-tuning won consistently, and the calibration gap was larger than the gap in discriminative power: the choice of pretraining affects the reliability of declared confidence more than it affects raw accuracy.</p>
+    <p><strong>Negative result reported:</strong> Grad-CAM produced concentrated, convincing maps with zero faithfulness to the model's actual decision under occlusion testing. A plausible explanation is not an explanation.</p>
+  </div>
+
+  <div class="item">
+    <h3>Manipulated-image detection with lightweight convolutional networks</h3>
+    <p>Empirical and adversarial evaluation of in-house detectors against ViT, Swin and ensembles, across three distributions. No single detector generalises across manipulation types, and in-distribution performance does not predict out-of-distribution performance. "Lightweight in parameters" does not imply lightweight in practice either — the cost metric that matters is measured latency.</p>
+  </div>
+
+  <p style="font-size:15px"><a href="https://github.com/jhlr/pedrita">Code and experimental infrastructure</a> — MLflow with per-epoch metrics, inference logging deduplicated by content hash, and statistical aggregation over multiple seeds.</p>
+</section>
+
+<section>
+  <h2>Projects</h2>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/minnow">Minnow</a></h3>
+    <p>A coding agent that runs entirely inside a phone's browser tab. No install, no account, no backend: the agent loop, tool execution, the file system, the Python interpreter and git are all client-side code. Every mobile coding agent is a remote control for a machine that is not yours — in this one, the agent is the client, and the only wire leaving the device is the call to the model.</p>
+    <p>It also does on-device inference via WebAssembly, validated end to end. I measured and documented the limit: at a size that fits on a phone, the model reports file writes it never performed. So on-device became conversation and the agent stayed in the cloud — stated in the prompt and in the UI, not hidden.</p>
+    <p class="stack">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/ragcode">ragcode</a></h3>
+    <p>A Model Context Protocol server that exposes a local model as tools, with a semantic code index refreshed on every commit. I use it daily to keep bulk work out of the agent's context window.</p>
+    <p class="stack">Python · MCP · Ollama · SQLite</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/MiniLM">EfficientNeXt</a></h3>
+    <p>An autoregressive LLM written from scratch: a causal <em>hourglass</em> architecture that translates EfficientNet-B0 into language, with pretrained-skeleton transfer and a causality test as the acceptance criterion.</p>
+    <p class="stack">Python · PyTorch</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/BTC-Forecast">btc-forecast</a></h3>
+    <p>Comparative evaluation of time-series foundation models — Chronos, TimesFM, Moirai, Lag-Llama, TTM — with fine-tuning, ensembling and backtesting. The honest conclusion is that short-horizon directional forecasting is indistinguishable from a random walk, and it is written in the repository.</p>
+    <p class="stack">Python · MLflow · Streamlit</p>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/jhlr/Blocks-py">Blocks-py</a></h3>
+    <p>An embedded DSL in Python: ordinary Python code builds a typed syntax tree instead of executing, and the same tree can be interpreted, compiled into a function or exported as a standalone module. Single file, no dependencies.</p>
+    <p class="stack">Python</p>
+  </div>
+</section>
+
+<section>
+  <h2>CV</h2>
+  <p>Three cuts of the same material, depending on what you are looking for.</p>
+  <div class="cvs">
+    <a href="cv/joao-rietra-ai-engineer-en.pdf">AI Engineer (PDF)</a>
+    <a href="cv/joao-rietra-health-ai-en.pdf">Health and AI (PDF)</a>
+    <a href="cv/joao-rietra-research-en.pdf">Research (PDF)</a>
+  </div>
+  <p style="font-size:15px; margin-top:14px">Portuguese versions on the <a href="?lang=pt">Portuguese page</a>.</p>
+</section>
+
+<section>
+  <h2>Education</h2>
+  <div class="item">
+    <p class="meta">CESAR School, Recife</p>
+    <p>Professional Master's in Software Engineering (industry-oriented track), since October 2025. Technologist degree in Data Science, since January 2025.</p>
+  </div>
+  <div class="item">
+    <p class="meta">FPS / IMIP, Recife</p>
+    <p>Doctor of Medicine (MD), completed in 2022 — the six-year Brazilian medical degree, entered directly from secondary school.</p>
+  </div>
+  <div class="item">
+    <p class="meta">University of Alberta, Canada</p>
+    <p>Computational neuroscience through Science Without Borders, 2015–2016: modelling of neural flows and analysis of high-dimensional data, at the intersection of computing, neuroscience and genetics.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
+  <span style="opacity:.4"> · </span>
+  <a href="https://github.com/jhlr">github.com/jhlr</a>
+  <span style="opacity:.4"> · </span>
+  <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
+</footer>
+
+</div><!-- /lang-en -->
 
 </div>
 
 <script>
 (function () {
   var root = document.documentElement;
-  var btn = document.getElementById('theme');
+
+  var themeBtn = document.getElementById('theme');
   var saved = null;
   try { saved = localStorage.getItem('theme'); } catch (e) {}
   if (saved) root.setAttribute('data-theme', saved);
 
-  btn.addEventListener('click', function () {
+  themeBtn.addEventListener('click', function () {
     var current = root.getAttribute('data-theme');
     if (!current) {
       current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -271,6 +440,57 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
     var next = current === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  /* O <head> é único, então título e descrição acompanham o idioma na troca. */
+  var META = {
+    pt: {
+      title: 'João Rietra — Médico e AI Engineer',
+      description: 'Médico e AI Engineer. Construo aplicações de IA generativa e avalio modelos com rigor: calibração, generalização fora-de-distribuição e fidelidade de explicação.',
+      ogDescription: 'IA generativa, avaliação de modelos e o cruzamento entre medicina e engenharia.',
+      htmlLang: 'pt-BR',
+      button: 'EN',
+      themeLabel: 'tema'
+    },
+    en: {
+      title: 'João Rietra — Physician and AI Engineer',
+      description: 'Physician and AI engineer. I build generative AI applications and evaluate models with rigour: calibration, out-of-distribution generalisation and explanation faithfulness.',
+      ogDescription: 'Generative AI, model evaluation, and the crossing between medicine and engineering.',
+      htmlLang: 'en',
+      button: 'PT',
+      themeLabel: 'theme'
+    }
+  };
+
+  var langBtn = document.getElementById('lang');
+
+  function apply(lang) {
+    var m = META[lang];
+    root.setAttribute('data-lang', lang);
+    root.setAttribute('lang', m.htmlLang);
+    document.title = m.title;
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) { desc.setAttribute('content', m.description); }
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) { ogTitle.setAttribute('content', m.title); }
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) { ogDesc.setAttribute('content', m.ogDescription); }
+    langBtn.textContent = m.button;
+    themeBtn.textContent = m.themeLabel;
+  }
+
+  apply(root.getAttribute('data-lang') === 'en' ? 'en' : 'pt');
+
+  langBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-lang') === 'en' ? 'pt' : 'en';
+    apply(next);
+    try { localStorage.setItem('lang', next); } catch (e) {}
+    /* Deixa a URL compartilhável sem recarregar. */
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set('lang', next);
+      history.replaceState(null, '', url);
+    } catch (e) {}
   });
 })();
 </script>
