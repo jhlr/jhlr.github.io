@@ -27,147 +27,823 @@
   document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'pt-BR');
 })();
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);else document.documentElement.setAttribute('data-theme',window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
 <style>
+
+/* ── TOKENS ───────────────────────────────────────────── */
 :root {
-  --bg: #ffffff;
-  --fg: #16181d;
-  --muted: #5c6270;
-  --line: #e2e5ea;
-  --accent: #1a4fd6;
-  --card: #f7f8fa;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0e1014;
-    --fg: #e8eaee;
-    --muted: #9aa2b1;
-    --line: #232833;
-    --accent: #7aa2ff;
-    --card: #161a21;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #ffffff; --fg: #16181d; --muted: #5c6270;
-  --line: #e2e5ea; --accent: #1a4fd6; --card: #f7f8fa;
-}
-:root[data-theme="dark"] {
-  --bg: #0e1014; --fg: #e8eaee; --muted: #9aa2b1;
-  --line: #232833; --accent: #7aa2ff; --card: #161a21;
+  --bg:       #000000;
+  --bg2:      #0a0a0a;
+  --bg3:      #111111;
+  --border:   #1f2a1f;
+  --text:     #f0f0f0;
+  --muted:    #888;
+  --gold:     #22ff7a;
+  --gold-dim: rgba(34,255,122,0.18);
+  --red:      #22ff7a;
+  --red-dim:  rgba(34,255,122,0.22);
+  --hbg:      rgba(0,0,0,0.90);
 }
 
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+[data-theme="light"] {
+  --bg:       #f4f8f4;
+  --bg2:      #ffffff;
+  --bg3:      #e6efe6;
+  --border:   #c3d2c3;
+  --text:     #111111;
+  --muted:    #666;
+  --gold:     #0a8f3c;
+  --gold-dim: rgba(10,143,60,0.14);
+  --red:      #0a8f3c;
+  --red-dim:  rgba(204,17,17,0.14);
+  --hbg:      rgba(244,248,244,0.92);
+}
+
+/* ── RESET ────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
 body {
-  margin: 0;
   background: var(--bg);
-  color: var(--fg);
-  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
-  font-feature-settings: "kern", "liga";
-  -webkit-font-smoothing: antialiased;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background .3s, color .3s;
 }
-.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
 
-/* Uma versão por vez. Sem JS o navegador cai no português. */
+a { color: inherit; text-decoration: none; }
+
+/* ── NAV ──────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--hbg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 58px;
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+
+.nav-dot { color: var(--text); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--muted);
+  transition: color .2s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.theme-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  padding: .3rem .55rem;
+  border-radius: 4px;
+  font-size: .95rem;
+  transition: border-color .2s, transform .15s;
+}
+
+.theme-btn:hover { border-color: var(--gold); transform: scale(1.06); }
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  padding-top: 58px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-bg-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -54%);
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: .85;
+}
+
+.hero-bg-title span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(6rem, 18vw, 18rem);
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--border);
+  letter-spacing: 6px;
+  white-space: nowrap;
+  opacity: .55;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 4rem;
+  align-items: center;
+}
+
+.tag-chip {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: .15em;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: .25rem .75rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-heading {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  margin-bottom: 1rem;
+}
+
+.line-small {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  letter-spacing: 4px;
+  color: var(--muted);
+}
+
+.line-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  letter-spacing: 4px;
+  color: var(--text);
+  text-shadow: 3px 3px 0 var(--gold), 0 0 40px var(--gold-dim);
+  line-height: .9;
+}
+
+.hero-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: .88rem;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  min-height: 1.3em;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+.cursor-blink { animation: blink 1s step-end infinite; color: var(--red); }
+@keyframes blink { 50% { opacity:0; } }
+
+.hero-bio {
+  font-size: .97rem;
+  color: var(--muted);
+  max-width: 480px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.hero-bio strong { color: var(--text); }
+
+.hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ── BUTTONS ──────────────────────────────────────────── */
+.btn-fill {
+  font-family: 'Space Mono', monospace;
+  font-size: .78rem;
+  letter-spacing: .05em;
+  background: var(--gold);
+  color: #111;
+  padding: .65rem 1.4rem;
+  display: inline-block;
+  font-weight: 700;
+  transition: opacity .2s, transform .15s;
+}
+
+.btn-fill:hover { opacity: .88; transform: translateY(-1px); }
+.btn-fill.sm { padding: .45rem 1rem; font-size: .72rem; }
+
+.btn-outline {
+  font-family: 'Space Mono', monospace;
+  font-size: .78rem;
+  letter-spacing: .05em;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  padding: .65rem 1.4rem;
+  display: inline-block;
+  transition: border-color .2s, color .2s;
+}
+
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-outline.sm { padding: .45rem 1rem; font-size: .72rem; }
+
+/* ── STACK PILLS ──────────────────────────────────────── */
+.stack-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.pill {
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: .3rem .75rem;
+  text-transform: uppercase;
+}
+
+.pill.gold { border-color: var(--gold); color: var(--gold); }
+
+/* ── HERO RIGHT ───────────────────────────────────────── */
+.hero-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.deco-star {
+  font-size: 2.2rem;
+  color: var(--gold);
+  animation: spin 8s linear infinite;
+  user-select: none;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.top-star { align-self: flex-end; margin-right: 1.5rem; }
+.bot-star { align-self: flex-start; margin-left: 1.5rem; font-size: 1.4rem; }
+
+.polaroid {
+  background: #fff;
+  padding: 10px 10px 40px 10px;
+  transform: rotate(-2.5deg);
+  box-shadow: 6px 6px 0 rgba(0,0,0,.45);
+  width: 280px;
+  transition: transform .3s;
+}
+
+.polaroid:hover { transform: rotate(0deg) scale(1.02); }
+
+.polaroid-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.06) saturate(.9);
+}
+
+.polaroid-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 6px;
+  gap: 2px;
+}
+
+.polaroid-role {
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem;
+  color: #111;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.polaroid-note {
+  font-family: 'Space Mono', monospace;
+  font-size: .62rem;
+  color: #555;
+}
+
+.deco-line-text {
+  font-family: 'Space Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  color: var(--muted);
+  opacity: .5;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.scroll-label {
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem;
+  color: var(--muted);
+  letter-spacing: .15em;
+  padding-bottom: 2rem;
+  animation: bounce .8s ease-in-out infinite alternate;
+}
+
+@keyframes bounce { to { transform: translateY(5px); } }
+
+/* ── MARQUEE BAND ─────────────────────────────────────── */
+.about-band {
+  background: var(--gold);
+  overflow: hidden;
+  padding: .65rem 0;
+  white-space: nowrap;
+}
+
+.band-text {
+  display: inline-block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: .25em;
+  color: #111;
+  animation: marquee 22s linear infinite;
+}
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── SECTIONS SHARED ──────────────────────────────────── */
+.arsenal-section,
+.projects-section,
+.studies-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem;
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem;
+  letter-spacing: .22em;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── ARSENAL ──────────────────────────────────────────── */
+.arsenal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.a-card {
+  background: var(--bg2);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  transition: background .2s;
+}
+
+.a-card:hover { background: var(--bg3); }
+.a-card.accent { border-top: 2px solid var(--gold); }
+
+.a-num {
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+
+.a-num.gold { color: var(--gold); }
+
+.a-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.a-name.gold { color: var(--gold); }
+
+.a-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.a-bar {
+  height: 2px;
+  background: var(--border);
+  margin-top: auto;
+}
+
+.a-fill {
+  height: 100%;
+  width: var(--w);
+  background: var(--gold);
+  animation: grow 1s ease forwards;
+}
+
+@keyframes grow { from { width:0; } to { width: var(--w); } }
+
+/* ── PROJECTS ─────────────────────────────────────────── */
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  letter-spacing: 4px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.sec-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: .73rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+  display: block;
+  margin-top: .35rem;
+}
+
+.proj-header { margin-bottom: 2.5rem; }
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.proj-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+
+.proj-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+
+.proj-card.feat {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.proj-img-wrap {
+  position: relative;
+  background: var(--bg3);
+  min-height: 240px;
+  overflow: hidden;
+}
+
+.proj-img-wrap.small { min-height: 170px; }
+
+.proj-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+.proj-img-hint {
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem;
+  color: var(--border);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.proj-info {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+
+.proj-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.proj-tag.gold { color: var(--gold); }
+
+.proj-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.proj-desc {
+  font-size: .83rem;
+  color: var(--muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.proj-links {
+  display: flex;
+  gap: .7rem;
+  margin-top: .4rem;
+  flex-wrap: wrap;
+}
+
+/* ── STUDIES ──────────────────────────────────────────── */
+.studies-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.track { display: flex; flex-direction: column; margin-top: 2rem; }
+
+.track-row {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 1.2rem;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+.track-row:not(:last-child) .track-dot::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 6px;
+  width: 1px;
+  height: calc(100% - 12px);
+  background: var(--border);
+}
+
+.track-dot {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.track-row.active .track-dot {
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold-dim);
+}
+
+.track-status {
+  font-family: 'Space Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .15em;
+  display: block;
+  margin-bottom: .3rem;
+}
+
+.track-status.red  { color: var(--red); }
+.track-status.gold { color: var(--gold); }
+
+.track-title {
+  font-family: 'Space Mono', monospace;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: .35rem;
+}
+
+.track-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.res-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.res-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 1.4rem;
+}
+
+.res-list { display: flex; flex-direction: column; gap: 1.1rem; }
+.res-item { display: flex; gap: .9rem; align-items: flex-start; }
+.res-ico  { font-size: 1.1rem; flex-shrink: 0; margin-top: .1rem; }
+
+.res-item strong {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem;
+  color: var(--text);
+  margin-bottom: .2rem;
+}
+
+.res-item p {
+  font-size: .75rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.big-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  letter-spacing: 4px;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--gold);
+  line-height: .9;
+  user-select: none;
+  padding-left: .2rem;
+}
+
+/* ── FOOTER ───────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.75rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+
+.footer-links { display: flex; gap: 2rem; }
+
+.footer-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: .72rem;
+  color: var(--muted);
+  transition: color .2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: .68rem;
+  color: var(--muted);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .arsenal-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .hero-inner         { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+  .hero-right         { order: -1; }
+  .hero-btns          { justify-content: center; }
+  .stack-pills        { justify-content: center; }
+  .hero-bio           { margin: 0 auto 2rem; }
+  .proj-grid          { grid-template-columns: 1fr; }
+  .proj-card.feat     { grid-template-columns: 1fr; }
+  .studies-inner      { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-bg-title span { font-size: clamp(5rem, 20vw, 10rem); }
+}
+
+@media (max-width: 640px) {
+  .nav                { padding: 0 1.25rem; }
+  .nav-links          { gap: 1.4rem; }
+  .nav-links a        { font-size: .65rem; }
+  .hero-inner         { padding: 2rem 1.25rem; }
+  .arsenal-section,
+  .projects-section,
+  .studies-section    { padding: 3rem 1.25rem; }
+  .arsenal-grid       { grid-template-columns: 1fr 1fr; }
+  .footer-inner       { flex-direction: column; align-items: flex-start; padding: 1.5rem 1.25rem; }
+}
+
+/* ── REDUCED MOTION ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .a-fill        { animation: none; width: var(--w); }
+  .deco-star     { animation: none; }
+  .band-text     { animation: none; }
+  .scroll-label  { animation: none; }
+}
+
+/* ── ADDITIONS (bilingual + prose sections) ── */
 :root[data-lang="en"] .lang-pt { display: none; }
 :root:not([data-lang="en"]) .lang-en { display: none; }
-
-header { padding: 72px 0 8px; }
-h1 { font-size: clamp(30px, 6vw, 42px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.02em; }
-.tagline { font-size: clamp(17px, 3vw, 19px); color: var(--muted); margin: 0 0 22px; line-height: 1.5; }
-.links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 15px; padding-bottom: 34px; border-bottom: 1px solid var(--line); }
-
-section { padding: 38px 0; border-bottom: 1px solid var(--line); }
-section:last-of-type { border-bottom: 0; }
-h2 {
-  font-size: 12px; text-transform: uppercase; letter-spacing: 0.09em;
-  color: var(--muted); font-weight: 600; margin: 0 0 18px;
-}
-h3 { font-size: 17px; margin: 0 0 4px; letter-spacing: -0.01em; }
-p { margin: 0 0 14px; }
-p:last-child { margin-bottom: 0; }
-.lead { font-size: 17px; }
-
-.item { margin-bottom: 26px; }
-.item:last-child { margin-bottom: 0; }
-.meta { font-size: 13.5px; color: var(--muted); margin: 0 0 8px; }
-.meta .sep { opacity: 0.45; padding: 0 6px; }
-.item p { font-size: 15.5px; }
-
-.stack {
-  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
-  margin-top: 8px; line-height: 1.6;
-}
-
-.note {
-  background: var(--card); border-left: 2px solid var(--accent);
-  padding: 16px 18px; margin: 0 0 26px; font-size: 15.5px;
-}
-.note strong { font-weight: 600; }
-
-.figures { display: flex; flex-wrap: wrap; gap: 26px; margin: 0 0 20px; }
-.fig { min-width: 108px; }
-.fig .n { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; display: block; line-height: 1.2; }
-.fig .l { font-size: 13px; color: var(--muted); display: block; }
-
-.cvs { display: flex; flex-wrap: wrap; gap: 10px; }
-.cvs a {
-  border: 1px solid var(--line); border-radius: 7px;
-  padding: 9px 15px; font-size: 14.5px; color: var(--fg);
-  transition: border-color .15s ease;
-}
-.cvs a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
-
-footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
-
-.controls { position: fixed; top: 18px; right: 18px; display: flex; gap: 8px; }
-.controls button {
-  background: var(--card); color: var(--muted);
-  border: 1px solid var(--line); border-radius: 7px;
-  padding: 6px 11px; font-size: 12.5px; cursor: pointer; font-family: inherit;
-}
-.controls button:hover { color: var(--fg); }
-
-@media (max-width: 560px) {
-  header { padding-top: 60px; }
-  section { padding: 30px 0; }
-  .controls { top: 12px; right: 12px; }
-}
+.nav-ctl { display: flex; gap: .5rem; }
+.nav-links { flex-wrap: nowrap; }
+.page-section { max-width: 1240px; margin: 0 auto; padding: 4rem 2.5rem; }
+.prose { max-width: 860px; }
+.prose p { font-size: .95rem; color: var(--muted); margin-bottom: 1rem; }
+.prose .lead, .prose strong { color: var(--text); }
+.prose h3 { font-family: 'Space Mono', monospace; font-size: .9rem; color: var(--text); margin-bottom: .3rem; }
+.prose a { color: var(--gold); }
+.prose .item { margin-bottom: 2rem; }
+.prose .meta { font-family: 'Space Mono', monospace; font-size: .72rem; color: var(--gold); letter-spacing: .05em; margin-bottom: .5rem; }
+.prose .meta .sep { padding: 0 .4rem; opacity: .5; }
+.prose .stack { font-family: 'Space Mono', monospace; font-size: .72rem; }
+.prose .note { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 1.1rem 1.3rem; margin-bottom: 2rem; font-size: .92rem; }
+.prose .figures { display: flex; flex-wrap: wrap; gap: 2.2rem; margin: 1.5rem 0 2rem; }
+.prose .fig .n { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; letter-spacing: 2px; color: var(--gold); display: block; line-height: 1; }
+.prose .fig .l { font-family: 'Space Mono', monospace; font-size: .68rem; color: var(--muted); }
+.proj-desc p { font-size: .83rem; color: var(--muted); margin-bottom: .6rem; }
+.proj-desc a { color: var(--gold); }
+.proj-card { display: flex; }
+.proj-card.feat { display: block; }
+.proj-card .proj-info { flex: 1; }
+.cv-list { display: flex; flex-direction: column; gap: .7rem; align-items: flex-start; }
+.track-title { line-height: 1.3; }
+@media (max-width: 900px) { .nav-links { display: none; } .page-section { padding: 3rem 1.25rem; } }
 </style>
 </head>
 <body>
-<div class="controls">
-  <button id="lang" type="button" aria-label="Switch language / Trocar idioma">EN</button>
-  <button id="theme" type="button" aria-label="Alternar tema / Toggle theme">tema</button>
-</div>
-
-<div class="wrap">
-
-<!-- ═══════════════════════════ PORTUGUÊS ═══════════════════════════ -->
 <div class="lang-pt">
+<nav class="nav"><span class="nav-logo">JHLR<span class="nav-dot">.</span></span>
+<ul class="nav-links"><li><a href="#home">Home</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#pesquisa">Pesquisa</a></li><li><a href="#projetos">Projetos</a></li><li><a href="#formacao">Formação</a></li></ul>
+<div class="nav-ctl"><button class="theme-btn" data-act="lang" type="button" aria-label="Switch language / Trocar idioma">EN</button><button class="theme-btn" data-act="theme" type="button" aria-label="Alternar tema / Toggle theme">🌓</button></div></nav>
 
-<header>
-  <h1>João Rietra</h1>
-  <p class="tagline">Médico e AI Engineer. Construo aplicações de IA generativa e avalio modelos com rigor — calibração, generalização fora da distribuição de treino e fidelidade de explicação.</p>
-  <nav class="links">
-    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
-    <a href="https://github.com/jhlr">GitHub</a>
-    <a href="https://linkedin.com/in/joaorietra">LinkedIn</a>
-    <span style="color:var(--muted)">Recife, Brasil</span>
-  </nav>
-</header>
+<section class="hero" id="home">
+<div class="hero-bg-title" aria-hidden="true"><span>JOÃO</span><span>RIETRA</span></div>
+<div class="hero-inner"><div class="hero-left">
+<div class="tag-chip">// MÉDICO + ENGENHEIRO</div>
+<h1 class="hero-heading"><span class="line-small">Médico e</span><span class="line-big">AI Engineer</span></h1>
+<p class="hero-sub"><span class="cursor-blink">_</span><span class="typewriter" data-phrases='["avalio modelos com rigor", "calibração antes de acurácia", "explicação plausível não é explicação", "três anos de plantão, agora em código"]'></span></p>
+<p class="hero-bio">Mestrando na <strong>CESAR School</strong>. Construo aplicações de IA generativa e meço o que o modelo realmente faz: calibração, generalização fora da distribuição e fidelidade de explicação.</p>
+<div class="hero-btns"><a href="mailto:joaorietra@gmail.com" class="btn-fill">joaorietra@gmail.com</a><a href="https://linkedin.com/in/joaorietra" target="_blank" rel="noopener" class="btn-outline">LinkedIn ↗</a><a href="https://github.com/jhlr" target="_blank" rel="noopener" class="btn-outline">GitHub ↗</a></div>
+<div class="stack-pills"><span class="pill gold">Python</span><span class="pill">PyTorch</span><span class="pill gold">LLMs</span><span class="pill">MLflow</span><span class="pill">TypeScript</span></div>
+</div>
+<div class="hero-right"><div class="deco-star top-star" aria-hidden="true">✳</div>
+<div class="polaroid"><img src="https://github.com/jhlr.png" alt="João Rietra" class="polaroid-img"><div class="polaroid-label"><span class="polaroid-role">Médico &amp; AI Eng</span><span class="polaroid-note">Recife, Brasil</span></div></div>
+<div class="deco-star bot-star" aria-hidden="true">✳</div></div></div>
+<div class="scroll-label" aria-hidden="true">↓ scroll</div></section>
 
-<section>
-  <h2>Sobre</h2>
+<div class="about-band"><span class="band-text" aria-hidden="true">PYTHON · PYTORCH · LLMs · RAG · CALIBRAÇÃO · MLFLOW · TYPESCRIPT · NESTJS · IA MÉDICA · PYTHON · PYTORCH · LLMs · RAG · CALIBRAÇÃO · MLFLOW · TYPESCRIPT · NESTJS · IA MÉDICA · </span></div>
+
+<section class="page-section" id="arsenal"><div class="section-label">[ ARSENAL ]</div>
+<div class="proj-header"><span class="sec-sub">O que uso no dia a dia.</span></div><div class="arsenal-grid"><div class="a-card"><span class="a-num gold">01</span><h2 class="a-name">Python / PyTorch</h2><p class="a-desc">Treino, fine-tuning e avaliação de modelos de visão e linguagem.</p></div><div class="a-card accent"><span class="a-num">02</span><h2 class="a-name gold">Avaliação de modelos</h2><p class="a-desc">Calibração (ECE), teste de oclusão, generalização entre distribuições e análise estatística.</p></div><div class="a-card"><span class="a-num gold">03</span><h2 class="a-name">IA generativa</h2><p class="a-desc">Agentes, RAG e pipelines com LLMs em produção: Groq, Ollama, BullMQ.</p></div><div class="a-card"><span class="a-num gold">04</span><h2 class="a-name">Dados e MLOps</h2><p class="a-desc">DuckDB, MLflow, PostgreSQL e Redis. Séries temporais e logging reproduzível.</p></div><div class="a-card"><span class="a-num gold">05</span><h2 class="a-name">Web</h2><p class="a-desc">TypeScript, React, NestJS e AWS CDK. Do agente ao front-end.</p></div></div></section>
+
+<section class="page-section prose" id="sobre"><div class="section-label">[ SOBRE ]</div>
   <p class="lead">Passei três anos na assistência — urgência pediátrica e atenção primária — e migrei para engenharia de IA sem abrir mão do lado clínico. A pergunta que atravessa tudo que eu faço é a mesma: <strong>quando um modelo é confiável o bastante para sustentar uma decisão?</strong></p>
   <p>Acurácia não responde isso. Um modelo pode acertar na média e mentir sobre a própria confiança; um mapa de saliência pode ser bonito e não ter relação com a decisão que o modelo tomou. Então eu meço calibração, testo fora da distribuição de treino, verifico se a explicação corresponde ao que o modelo de fato usou — e reporto quando o resultado é negativo, que é a parte que costuma sumir dos relatórios.</p>
   <p>Hoje trabalho como AI Engineer na LetzGrow e faço mestrado profissional em Engenharia de Software na CESAR School.</p>
-</section>
 
-<section>
-  <h2>Agora</h2>
+<div class="section-label" style="margin-top:3rem">[ AGORA ]</div>
   <div class="note">
     <strong>Primeiro aluno classificado com dois projetos simultâneos no School Innovation da CESAR School</strong> (edição 2026.2). É a trilha de pré-incubação da escola: os grupos passam por seleção, deixam a disciplina de Projeto e passam a ser acompanhados por professores orientadores, com artefatos avaliativos ao longo do semestre. Oito grupos foram classificados na edição; dois são meus.
   </div>
@@ -187,8 +863,7 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
   </div>
 </section>
 
-<section>
-  <h2>Pesquisa</h2>
+<section class="page-section prose" id="pesquisa"><div class="section-label">[ PESQUISA ]</div>
   <p>Dissertação de mestrado (CESAR School, 2026): dois artigos conectados sobre confiabilidade de modelos de imagem médica.</p>
 
   <div class="figures">
@@ -211,101 +886,59 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
   <p style="font-size:15px"><a href="https://github.com/jhlr/pedrita">Código e infraestrutura experimental</a> — MLflow com métricas por época, logging de inferência deduplicado por hash de conteúdo e agregação estatística sobre múltiplas seeds.</p>
 </section>
 
-<section>
-  <h2>Projetos</h2>
+<section class="page-section" id="projetos"><div class="section-label">[ PROJETOS ]</div>
+<div class="proj-header"><h2 class="sec-title">Projetos</h2><span class="sec-sub">Código aberto, resultados medidos.</span></div>
+<div class="proj-grid"><article class="proj-card feat"><div class="proj-info">
+<span class="proj-tag gold">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</span><h2 class="proj-title">Minnow</h2><div class="proj-desc"><p>Um agente de coding que roda inteiro dentro da aba do navegador do celular. Sem instalar, sem conta, sem backend: o loop do agente, a execução de ferramentas, o sistema de arquivos, o interpretador Python e o git são código do lado do cliente. Todo agente de coding mobile é controle remoto de uma máquina que não é sua — neste, o agente é o cliente, e o único fio que sai do aparelho é a chamada ao modelo.</p><p>Tem também inferência on-device via WebAssembly, validada ponta a ponta. Medi e documentei o limite: no tamanho que cabe num celular, o modelo relata escritas de arquivo que nunca executou. Então on-device virou conversa e o agente ficou na nuvem — dito no prompt e na interface, não escondido.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/minnow" target="_blank" rel="noopener" class="btn-fill sm">Ver código ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · MCP · Ollama · SQLite</span><h2 class="proj-title">ragcode</h2><div class="proj-desc"><p>Servidor Model Context Protocol que expõe um modelo local como ferramentas, com índice semântico de código atualizado a cada commit. Uso todo dia para tirar trabalho volumoso do contexto do agente.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/ragcode" target="_blank" rel="noopener" class="btn-fill sm">Ver código ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · PyTorch</span><h2 class="proj-title">EfficientNeXt</h2><div class="proj-desc"><p>Um LLM autoregressivo escrito do zero: arquitetura <em>hourglass</em> causal que traduz a EfficientNet-B0 para linguagem, com transferência de esqueleto pré-treinado e teste de causalidade como critério de aceite.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/MiniLM" target="_blank" rel="noopener" class="btn-fill sm">Ver código ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · MLflow · Streamlit</span><h2 class="proj-title">btc-forecast</h2><div class="proj-desc"><p>Avaliação comparativa de foundation models de série temporal — Chronos, TimesFM, Moirai, Lag-Llama, TTM — com fine-tuning, ensemble e backtest. A conclusão honesta é que previsão direcional de curto prazo é indistinguível de passeio aleatório, e está escrita no repositório.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/BTC-Forecast" target="_blank" rel="noopener" class="btn-fill sm">Ver código ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python</span><h2 class="proj-title">Blocks-py</h2><div class="proj-desc"><p>Uma DSL embarcada em Python: código Python comum constrói uma árvore sintática tipada em vez de executar, e a mesma árvore pode ser interpretada, compilada em função ou exportada como módulo autônomo. Arquivo único, sem dependências.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/Blocks-py" target="_blank" rel="noopener" class="btn-fill sm">Ver código ↗</a></div></div></article></div></section>
 
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/minnow">Minnow</a></h3>
-    <p>Um agente de coding que roda inteiro dentro da aba do navegador do celular. Sem instalar, sem conta, sem backend: o loop do agente, a execução de ferramentas, o sistema de arquivos, o interpretador Python e o git são código do lado do cliente. Todo agente de coding mobile é controle remoto de uma máquina que não é sua — neste, o agente é o cliente, e o único fio que sai do aparelho é a chamada ao modelo.</p>
-    <p>Tem também inferência on-device via WebAssembly, validada ponta a ponta. Medi e documentei o limite: no tamanho que cabe num celular, o modelo relata escritas de arquivo que nunca executou. Então on-device virou conversa e o agente ficou na nuvem — dito no prompt e na interface, não escondido.</p>
-    <p class="stack">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</p>
-  </div>
+<section class="page-section" id="formacao"><div class="section-label">[ FORMAÇÃO ]</div>
+<div class="studies-inner"><div><h2 class="sec-title">Formação</h2><span class="sec-sub">Da clínica para a engenharia.</span><div class="track"><div class="track-row active"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">CESAR School, Recife</h3><p class="track-desc">Mestrado Profissional em Engenharia de Software, desde outubro de 2025. Tecnólogo em Ciência de Dados, desde janeiro de 2025.</p></div></div><div class="track-row"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">FPS / IMIP, Recife</h3><p class="track-desc">Medicina, concluído em 2022.</p></div></div><div class="track-row"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">University of Alberta, Canadá</h3><p class="track-desc">Neurociência computacional pelo Ciências sem Fronteiras, 2015–2016: modelagem de fluxos neurais e análise de dados de alta dimensionalidade, no cruzamento entre computação, neurociência e genética.</p></div></div></div></div>
+<div><div class="res-card"><h2 class="res-title">Currículo</h2><p class="track-desc" style="margin-bottom:1.2rem">Quatro recortes do mesmo material.</p><div class="cv-list"><a class="btn-outline" href="cv/joao-rietra-ai-engineer.pdf">AI Engineer (PDF)</a><a class="btn-outline" href="cv/joao-rietra-data-scientist.pdf">AI Data Scientist (PDF)</a><a class="btn-outline" href="cv/joao-rietra-health-ai.pdf">Saúde e IA (PDF)</a><a class="btn-outline" href="cv/joao-rietra-pesquisa.pdf">Pesquisa (PDF)</a></div></div>
+<div class="big-quote" aria-hidden="true">CALIBRAÇÃO<br>ANTES DE<br>ACURÁCIA</div></div></div></section>
 
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/ragcode">ragcode</a></h3>
-    <p>Servidor Model Context Protocol que expõe um modelo local como ferramentas, com índice semântico de código atualizado a cada commit. Uso todo dia para tirar trabalho volumoso do contexto do agente.</p>
-    <p class="stack">Python · MCP · Ollama · SQLite</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/MiniLM">EfficientNeXt</a></h3>
-    <p>Um LLM autoregressivo escrito do zero: arquitetura <em>hourglass</em> causal que traduz a EfficientNet-B0 para linguagem, com transferência de esqueleto pré-treinado e teste de causalidade como critério de aceite.</p>
-    <p class="stack">Python · PyTorch</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/BTC-Forecast">btc-forecast</a></h3>
-    <p>Avaliação comparativa de foundation models de série temporal — Chronos, TimesFM, Moirai, Lag-Llama, TTM — com fine-tuning, ensemble e backtest. A conclusão honesta é que previsão direcional de curto prazo é indistinguível de passeio aleatório, e está escrita no repositório.</p>
-    <p class="stack">Python · MLflow · Streamlit</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/Blocks-py">Blocks-py</a></h3>
-    <p>Uma DSL embarcada em Python: código Python comum constrói uma árvore sintática tipada em vez de executar, e a mesma árvore pode ser interpretada, compilada em função ou exportada como módulo autônomo. Arquivo único, sem dependências.</p>
-    <p class="stack">Python</p>
-  </div>
-</section>
-
-<section>
-  <h2>Currículo</h2>
-  <p>Três recortes do mesmo material, conforme o interesse.</p>
-  <div class="cvs">
-    <a href="cv/joao-rietra-ai-engineer.pdf">AI Engineer (PDF)</a>
-    <a href="cv/joao-rietra-health-ai.pdf">Saúde e IA (PDF)</a>
-    <a href="cv/joao-rietra-pesquisa.pdf">Pesquisa (PDF)</a>
-  </div>
-  <p style="font-size:15px; margin-top:14px">Versões em inglês na <a href="?lang=en">página em inglês</a>.</p>
-</section>
-
-<section>
-  <h2>Formação</h2>
-  <div class="item">
-    <p class="meta">CESAR School, Recife</p>
-    <p>Mestrado Profissional em Engenharia de Software, desde outubro de 2025. Tecnólogo em Ciência de Dados, desde janeiro de 2025.</p>
-  </div>
-  <div class="item">
-    <p class="meta">FPS / IMIP, Recife</p>
-    <p>Medicina, concluído em 2022.</p>
-  </div>
-  <div class="item">
-    <p class="meta">University of Alberta, Canadá</p>
-    <p>Neurociência computacional pelo Ciências sem Fronteiras, 2015–2016: modelagem de fluxos neurais e análise de dados de alta dimensionalidade, no cruzamento entre computação, neurociência e genética.</p>
-  </div>
-</section>
-
-<footer>
-  <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
-  <span style="opacity:.4"> · </span>
-  <a href="https://github.com/jhlr">github.com/jhlr</a>
-  <span style="opacity:.4"> · </span>
-  <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
-</footer>
-
-</div><!-- /lang-pt -->
-
-<!-- ═══════════════════════════ ENGLISH ═══════════════════════════ -->
+<footer class="site-footer"><div class="footer-inner"><span class="footer-name">João Rietra</span>
+<div class="footer-links"><a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a><a href="https://github.com/jhlr">GitHub</a><a href="https://linkedin.com/in/joaorietra">LinkedIn</a></div><span class="footer-copy">© 2026</span></div></footer>
+</div>
 <div class="lang-en">
+<nav class="nav"><span class="nav-logo">JHLR<span class="nav-dot">.</span></span>
+<ul class="nav-links"><li><a href="#home">Home</a></li><li><a href="#sobre">About</a></li><li><a href="#pesquisa">Research</a></li><li><a href="#projetos">Projects</a></li><li><a href="#formacao">Education</a></li></ul>
+<div class="nav-ctl"><button class="theme-btn" data-act="lang" type="button" aria-label="Switch language / Trocar idioma">PT</button><button class="theme-btn" data-act="theme" type="button" aria-label="Alternar tema / Toggle theme">🌓</button></div></nav>
 
-<header>
-  <h1>João Rietra</h1>
-  <p class="tagline">Physician and AI engineer. I build generative AI applications and evaluate models with rigour — calibration, generalisation outside the training distribution, and explanation faithfulness.</p>
-  <nav class="links">
-    <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
-    <a href="https://github.com/jhlr">GitHub</a>
-    <a href="https://linkedin.com/in/joaorietra">LinkedIn</a>
-    <span style="color:var(--muted)">Recife, Brazil</span>
-  </nav>
-</header>
+<section class="hero" id="home">
+<div class="hero-bg-title" aria-hidden="true"><span>JOÃO</span><span>RIETRA</span></div>
+<div class="hero-inner"><div class="hero-left">
+<div class="tag-chip">// PHYSICIAN + ENGINEER</div>
+<h1 class="hero-heading"><span class="line-small">Physician and</span><span class="line-big">AI Engineer</span></h1>
+<p class="hero-sub"><span class="cursor-blink">_</span><span class="typewriter" data-phrases='["I evaluate models with rigour", "calibration before accuracy", "a plausible explanation is not an explanation", "three years on shift, now in code"]'></span></p>
+<p class="hero-bio">Master's student at <strong>CESAR School</strong>. I build generative AI applications and measure what the model actually does: calibration, out-of-distribution generalisation and explanation faithfulness.</p>
+<div class="hero-btns"><a href="mailto:joaorietra@gmail.com" class="btn-fill">joaorietra@gmail.com</a><a href="https://linkedin.com/in/joaorietra" target="_blank" rel="noopener" class="btn-outline">LinkedIn ↗</a><a href="https://github.com/jhlr" target="_blank" rel="noopener" class="btn-outline">GitHub ↗</a></div>
+<div class="stack-pills"><span class="pill gold">Python</span><span class="pill">PyTorch</span><span class="pill gold">LLMs</span><span class="pill">MLflow</span><span class="pill">TypeScript</span></div>
+</div>
+<div class="hero-right"><div class="deco-star top-star" aria-hidden="true">✳</div>
+<div class="polaroid"><img src="https://github.com/jhlr.png" alt="João Rietra" class="polaroid-img"><div class="polaroid-label"><span class="polaroid-role">Physician &amp; AI Eng</span><span class="polaroid-note">Recife, Brazil</span></div></div>
+<div class="deco-star bot-star" aria-hidden="true">✳</div></div></div>
+<div class="scroll-label" aria-hidden="true">↓ scroll</div></section>
 
-<section>
-  <h2>About</h2>
+<div class="about-band"><span class="band-text" aria-hidden="true">PYTHON · PYTORCH · LLMs · RAG · CALIBRATION · MLFLOW · TYPESCRIPT · NESTJS · MEDICAL AI · PYTHON · PYTORCH · LLMs · RAG · CALIBRATION · MLFLOW · TYPESCRIPT · NESTJS · MEDICAL AI · </span></div>
+
+<section class="page-section" id="arsenal"><div class="section-label">[ ARSENAL ]</div>
+<div class="proj-header"><span class="sec-sub">What I use day to day.</span></div><div class="arsenal-grid"><div class="a-card"><span class="a-num gold">01</span><h2 class="a-name">Python / PyTorch</h2><p class="a-desc">Training, fine-tuning and evaluation of vision and language models.</p></div><div class="a-card accent"><span class="a-num">02</span><h2 class="a-name gold">Model evaluation</h2><p class="a-desc">Calibration (ECE), occlusion testing, cross-distribution generalisation and statistical analysis.</p></div><div class="a-card"><span class="a-num gold">03</span><h2 class="a-name">Generative AI</h2><p class="a-desc">Agents, RAG and LLM pipelines in production: Groq, Ollama, BullMQ.</p></div><div class="a-card"><span class="a-num gold">04</span><h2 class="a-name">Data and MLOps</h2><p class="a-desc">DuckDB, MLflow, PostgreSQL and Redis. Time series and reproducible logging.</p></div><div class="a-card"><span class="a-num gold">05</span><h2 class="a-name">Web</h2><p class="a-desc">TypeScript, React, NestJS and AWS CDK. From the agent to the front end.</p></div></div></section>
+
+<section class="page-section prose" id="sobre"><div class="section-label">[ ABOUT ]</div>
   <p class="lead">I spent three years in clinical practice — paediatric emergency and primary care — and moved into AI engineering without giving up the clinical side. One question runs through everything I do: <strong>when is a model reliable enough to support a decision?</strong></p>
   <p>Accuracy does not answer that. A model can be right on average and lie about its own confidence; a saliency map can be beautiful and bear no relation to the decision the model actually made. So I measure calibration, test outside the training distribution, check whether the explanation matches what the model really used — and I report the negative results, which is the part that usually disappears from write-ups.</p>
   <p>I currently work as an AI Engineer at LetzGrow and am taking a Professional Master's in Software Engineering at CESAR School.</p>
-</section>
 
-<section>
-  <h2>Now</h2>
+<div class="section-label" style="margin-top:3rem">[ NOW ]</div>
   <div class="note">
     <strong>First student ever selected with two simultaneous projects in CESAR School's School Innovation programme</strong> (2026.2 cohort). It is the school's pre-incubation track: teams go through competitive selection, leave the regular Project course behind and are supervised by faculty advisors, assessed on delivered artefacts through the semester. Eight teams were selected in the cohort; two of them are mine.
   </div>
@@ -325,8 +958,7 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
   </div>
 </section>
 
-<section>
-  <h2>Research</h2>
+<section class="page-section prose" id="pesquisa"><div class="section-label">[ RESEARCH ]</div>
   <p>Master's dissertation (CESAR School, 2026): two connected papers on the reliability of medical imaging models.</p>
 
   <div class="figures">
@@ -349,149 +981,59 @@ footer { padding: 40px 0 64px; font-size: 14px; color: var(--muted); }
   <p style="font-size:15px"><a href="https://github.com/jhlr/pedrita">Code and experimental infrastructure</a> — MLflow with per-epoch metrics, inference logging deduplicated by content hash, and statistical aggregation over multiple seeds.</p>
 </section>
 
-<section>
-  <h2>Projects</h2>
+<section class="page-section" id="projetos"><div class="section-label">[ PROJECTS ]</div>
+<div class="proj-header"><h2 class="sec-title">Projects</h2><span class="sec-sub">Open source, measured results.</span></div>
+<div class="proj-grid"><article class="proj-card feat"><div class="proj-info">
+<span class="proj-tag gold">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</span><h2 class="proj-title">Minnow</h2><div class="proj-desc"><p>A coding agent that runs entirely inside a phone's browser tab. No install, no account, no backend: the agent loop, tool execution, the file system, the Python interpreter and git are all client-side code. Every mobile coding agent is a remote control for a machine that is not yours — in this one, the agent is the client, and the only wire leaving the device is the call to the model.</p><p>It also does on-device inference via WebAssembly, validated end to end. I measured and documented the limit: at a size that fits on a phone, the model reports file writes it never performed. So on-device became conversation and the agent stayed in the cloud — stated in the prompt and in the UI, not hidden.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/minnow" target="_blank" rel="noopener" class="btn-fill sm">View code ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · MCP · Ollama · SQLite</span><h2 class="proj-title">ragcode</h2><div class="proj-desc"><p>A Model Context Protocol server that exposes a local model as tools, with a semantic code index refreshed on every commit. I use it daily to keep bulk work out of the agent's context window.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/ragcode" target="_blank" rel="noopener" class="btn-fill sm">View code ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · PyTorch</span><h2 class="proj-title">EfficientNeXt</h2><div class="proj-desc"><p>An autoregressive LLM written from scratch: a causal <em>hourglass</em> architecture that translates EfficientNet-B0 into language, with pretrained-skeleton transfer and a causality test as the acceptance criterion.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/MiniLM" target="_blank" rel="noopener" class="btn-fill sm">View code ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python · MLflow · Streamlit</span><h2 class="proj-title">btc-forecast</h2><div class="proj-desc"><p>Comparative evaluation of time-series foundation models — Chronos, TimesFM, Moirai, Lag-Llama, TTM — with fine-tuning, ensembling and backtesting. The honest conclusion is that short-horizon directional forecasting is indistinguishable from a random walk, and it is written in the repository.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/BTC-Forecast" target="_blank" rel="noopener" class="btn-fill sm">View code ↗</a></div></div></article><article class="proj-card"><div class="proj-info">
+<span class="proj-tag">Python</span><h2 class="proj-title">Blocks-py</h2><div class="proj-desc"><p>An embedded DSL in Python: ordinary Python code builds a typed syntax tree instead of executing, and the same tree can be interpreted, compiled into a function or exported as a standalone module. Single file, no dependencies.</p></div>
+<div class="proj-links"><a href="https://github.com/jhlr/Blocks-py" target="_blank" rel="noopener" class="btn-fill sm">View code ↗</a></div></div></article></div></section>
 
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/minnow">Minnow</a></h3>
-    <p>A coding agent that runs entirely inside a phone's browser tab. No install, no account, no backend: the agent loop, tool execution, the file system, the Python interpreter and git are all client-side code. Every mobile coding agent is a remote control for a machine that is not yours — in this one, the agent is the client, and the only wire leaving the device is the call to the model.</p>
-    <p>It also does on-device inference via WebAssembly, validated end to end. I measured and documented the limit: at a size that fits on a phone, the model reports file writes it never performed. So on-device became conversation and the agent stayed in the cloud — stated in the prompt and in the UI, not hidden.</p>
-    <p class="stack">TypeScript · React · Vite · WebAssembly (wllama) · isomorphic-git · Skulpt / Pyodide · IndexedDB · Playwright</p>
-  </div>
+<section class="page-section" id="formacao"><div class="section-label">[ EDUCATION ]</div>
+<div class="studies-inner"><div><h2 class="sec-title">Education</h2><span class="sec-sub">From the clinic to engineering.</span><div class="track"><div class="track-row active"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">CESAR School, Recife</h3><p class="track-desc">Professional Master's in Software Engineering (industry-oriented track), since October 2025. Technologist degree in Data Science, since January 2025.</p></div></div><div class="track-row"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">FPS / IMIP, Recife</h3><p class="track-desc">Doctor of Medicine (MD), completed in 2022 — the six-year Brazilian medical degree, entered directly from secondary school.</p></div></div><div class="track-row"><div class="track-dot"></div><div class="track-body"><h3 class="track-title">University of Alberta, Canada</h3><p class="track-desc">Computational neuroscience through Science Without Borders, 2015–2016: modelling of neural flows and analysis of high-dimensional data, at the intersection of computing, neuroscience and genetics.</p></div></div></div></div>
+<div><div class="res-card"><h2 class="res-title">CV</h2><p class="track-desc" style="margin-bottom:1.2rem">Four cuts of the same material.</p><div class="cv-list"><a class="btn-outline" href="cv/joao-rietra-ai-engineer-en.pdf">AI Engineer (PDF)</a><a class="btn-outline" href="cv/joao-rietra-data-scientist-en.pdf">AI Data Scientist (PDF)</a><a class="btn-outline" href="cv/joao-rietra-health-ai-en.pdf">Health and AI (PDF)</a><a class="btn-outline" href="cv/joao-rietra-research-en.pdf">Research (PDF)</a></div></div>
+<div class="big-quote" aria-hidden="true">CALIBRATION<br>BEFORE<br>ACCURACY</div></div></div></section>
 
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/ragcode">ragcode</a></h3>
-    <p>A Model Context Protocol server that exposes a local model as tools, with a semantic code index refreshed on every commit. I use it daily to keep bulk work out of the agent's context window.</p>
-    <p class="stack">Python · MCP · Ollama · SQLite</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/MiniLM">EfficientNeXt</a></h3>
-    <p>An autoregressive LLM written from scratch: a causal <em>hourglass</em> architecture that translates EfficientNet-B0 into language, with pretrained-skeleton transfer and a causality test as the acceptance criterion.</p>
-    <p class="stack">Python · PyTorch</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/BTC-Forecast">btc-forecast</a></h3>
-    <p>Comparative evaluation of time-series foundation models — Chronos, TimesFM, Moirai, Lag-Llama, TTM — with fine-tuning, ensembling and backtesting. The honest conclusion is that short-horizon directional forecasting is indistinguishable from a random walk, and it is written in the repository.</p>
-    <p class="stack">Python · MLflow · Streamlit</p>
-  </div>
-
-  <div class="item">
-    <h3><a href="https://github.com/jhlr/Blocks-py">Blocks-py</a></h3>
-    <p>An embedded DSL in Python: ordinary Python code builds a typed syntax tree instead of executing, and the same tree can be interpreted, compiled into a function or exported as a standalone module. Single file, no dependencies.</p>
-    <p class="stack">Python</p>
-  </div>
-</section>
-
-<section>
-  <h2>CV</h2>
-  <p>Three cuts of the same material, depending on what you are looking for.</p>
-  <div class="cvs">
-    <a href="cv/joao-rietra-ai-engineer-en.pdf">AI Engineer (PDF)</a>
-    <a href="cv/joao-rietra-health-ai-en.pdf">Health and AI (PDF)</a>
-    <a href="cv/joao-rietra-research-en.pdf">Research (PDF)</a>
-  </div>
-  <p style="font-size:15px; margin-top:14px">Portuguese versions on the <a href="?lang=pt">Portuguese page</a>.</p>
-</section>
-
-<section>
-  <h2>Education</h2>
-  <div class="item">
-    <p class="meta">CESAR School, Recife</p>
-    <p>Professional Master's in Software Engineering (industry-oriented track), since October 2025. Technologist degree in Data Science, since January 2025.</p>
-  </div>
-  <div class="item">
-    <p class="meta">FPS / IMIP, Recife</p>
-    <p>Doctor of Medicine (MD), completed in 2022 — the six-year Brazilian medical degree, entered directly from secondary school.</p>
-  </div>
-  <div class="item">
-    <p class="meta">University of Alberta, Canada</p>
-    <p>Computational neuroscience through Science Without Borders, 2015–2016: modelling of neural flows and analysis of high-dimensional data, at the intersection of computing, neuroscience and genetics.</p>
-  </div>
-</section>
-
-<footer>
-  <a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a>
-  <span style="opacity:.4"> · </span>
-  <a href="https://github.com/jhlr">github.com/jhlr</a>
-  <span style="opacity:.4"> · </span>
-  <a href="https://linkedin.com/in/joaorietra">linkedin.com/in/joaorietra</a>
-</footer>
-
-</div><!-- /lang-en -->
-
+<footer class="site-footer"><div class="footer-inner"><span class="footer-name">João Rietra</span>
+<div class="footer-links"><a href="mailto:joaorietra@gmail.com">joaorietra@gmail.com</a><a href="https://github.com/jhlr">GitHub</a><a href="https://linkedin.com/in/joaorietra">LinkedIn</a></div><span class="footer-copy">© 2026</span></div></footer>
 </div>
-
 <script>
 (function () {
   var root = document.documentElement;
-
-  var themeBtn = document.getElementById('theme');
-  var saved = null;
-  try { saved = localStorage.getItem('theme'); } catch (e) {}
-  if (saved) root.setAttribute('data-theme', saved);
-
-  themeBtn.addEventListener('click', function () {
-    var current = root.getAttribute('data-theme');
-    if (!current) {
-      current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    if (b.dataset.act === 'lang') {
+      var l = root.getAttribute('data-lang') === 'en' ? 'pt' : 'en';
+      root.setAttribute('data-lang', l); root.setAttribute('lang', l === 'en' ? 'en' : 'pt-BR'); save('lang', l); startTyping();
+    } else {
+      var t = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', t); save('theme', t);
     }
-    var next = current === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
   });
-
-  /* O <head> é único, então título e descrição acompanham o idioma na troca. */
-  var META = {
-    pt: {
-      title: 'João Rietra — Médico e AI Engineer',
-      description: 'Médico e AI Engineer. Construo aplicações de IA generativa e avalio modelos com rigor: calibração, generalização fora-de-distribuição e fidelidade de explicação.',
-      ogDescription: 'IA generativa, avaliação de modelos e o cruzamento entre medicina e engenharia.',
-      htmlLang: 'pt-BR',
-      button: 'EN',
-      themeLabel: 'tema'
-    },
-    en: {
-      title: 'João Rietra — Physician and AI Engineer',
-      description: 'Physician and AI engineer. I build generative AI applications and evaluate models with rigour: calibration, out-of-distribution generalisation and explanation faithfulness.',
-      ogDescription: 'Generative AI, model evaluation, and the crossing between medicine and engineering.',
-      htmlLang: 'en',
-      button: 'PT',
-      themeLabel: 'theme'
-    }
-  };
-
-  var langBtn = document.getElementById('lang');
-
-  function apply(lang) {
-    var m = META[lang];
-    root.setAttribute('data-lang', lang);
-    root.setAttribute('lang', m.htmlLang);
-    document.title = m.title;
-    var desc = document.querySelector('meta[name="description"]');
-    if (desc) { desc.setAttribute('content', m.description); }
-    var ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) { ogTitle.setAttribute('content', m.title); }
-    var ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) { ogDesc.setAttribute('content', m.ogDescription); }
-    langBtn.textContent = m.button;
-    themeBtn.textContent = m.themeLabel;
+  var timer = null;
+  function startTyping() {
+    clearTimeout(timer);
+    var el = document.querySelector('.lang-' + (root.getAttribute('data-lang') === 'en' ? 'en' : 'pt') + ' .typewriter');
+    if (!el) return;
+    var ph = JSON.parse(el.dataset.phrases), i = 0, j = 0, del = false;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = ph[0]; return; }
+    (function tick() {
+      var s = ph[i];
+      el.textContent = s.slice(0, j);
+      if (!del && j === s.length) { del = true; timer = setTimeout(tick, 1800); return; }
+      if (del && j === 0) { del = false; i = (i + 1) % ph.length; }
+      j += del ? -1 : 1;
+      timer = setTimeout(tick, del ? 25 : 55);
+    })();
   }
-
-  apply(root.getAttribute('data-lang') === 'en' ? 'en' : 'pt');
-
-  langBtn.addEventListener('click', function () {
-    var next = root.getAttribute('data-lang') === 'en' ? 'pt' : 'en';
-    apply(next);
-    try { localStorage.setItem('lang', next); } catch (e) {}
-    /* Deixa a URL compartilhável sem recarregar. */
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set('lang', next);
-      history.replaceState(null, '', url);
-    } catch (e) {}
-  });
+  startTyping();
 })();
 </script>
 </body>
